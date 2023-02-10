@@ -2,7 +2,7 @@
 import { Express } from 'express'
 
 // local imports
-import { connectDB } from './connectDB'
+import { connectDB } from '../db/connectDB'
 
 // helper function to connect to db and start server
 export const startServer = (app: Express, PORT: (number | string)) => {

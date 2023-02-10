@@ -1,10 +1,38 @@
-import express from 'express'
-const app = express();
+//library imports
+import express, { Response, NextFunction, Request } from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import 'express-async-errors'
 
+// local imports
+import authRouter from './routes/authRouter'
+import { startServer } from './util/startServer'
+import { errorHandlerMiddleware } from './middleware/errorHandlerMiddleware'
+import { CustomErrorArgs } from './errors/CustomError'
+
+//initialize express app
+const app = express();
+dotenv.config()
+
+// declare port variable
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-    res.status(200).json('hello')
-})
+// start the server
+startServer(app, PORT);
 
-app.listen(PORT, () => console.log('listening on port'))
+// middleware
+app.use(cors(
+    {
+        credentials: true,
+        origin: 'http://127.0.0.1:5173'
+    }
+))
+app.use(express.json())
+
+// routes
+app.use('/auth', authRouter)
+
+//error handler middleware
+app.use((error: CustomErrorArgs, req: Request, res: Response, next: NextFunction) => {
+    errorHandlerMiddleware(error, res)
+})
