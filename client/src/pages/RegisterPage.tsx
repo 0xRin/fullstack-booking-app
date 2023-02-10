@@ -9,14 +9,12 @@ import { useState } from "react";
 type Props = {};
 
 const RegisterPage = (props: Props) => {
-  let defaultInfo = {
+  // formInputs
+  const [registerInfo, setRegisterInfo] = useState({
     name: "",
     email: "",
     password: "",
-  };
-
-  // formInputs
-  const [registerInfo, setRegisterInfo] = useState(defaultInfo);
+  });
   const [error, setError] = useState<null | string>(null);
 
   // update form state on form change
@@ -26,7 +24,6 @@ const RegisterPage = (props: Props) => {
   };
 
   // calls backend route to register user
-  //TODO: refactor
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -40,7 +37,6 @@ const RegisterPage = (props: Props) => {
       });
 
       const data = await res.data;
-      setRegisterInfo(defaultInfo);
       console.log(data);
     } catch (e: any) {
       if (e instanceof AxiosError) {
