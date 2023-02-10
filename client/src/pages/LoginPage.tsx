@@ -1,5 +1,5 @@
 // library imports
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //component imports
 import HeaderFooterLayout from "../layouts/HeaderFooterLayout";
@@ -9,6 +9,8 @@ import axios, { AxiosError } from "axios";
 type Props = {};
 
 const LoginPage = (props: Props) => {
+  const navigate = useNavigate();
+
   const [loginInput, setLoginInput] = useState({
     email: "",
     password: "",
@@ -30,11 +32,18 @@ const LoginPage = (props: Props) => {
     };
 
     try {
-      const res = await axios.post("http://localhost:3000/auth/login", {
-        ...loginInput,
+      await axios.post(
+        "http://127.0.0.1:3000/auth/login",
+        {
+          ...loginInput,
+        },
+        { withCredentials: true }
+      );
+      setLoginInput({
+        email: "",
+        password: "",
       });
-      const data = await res.data;
-      console.log(data);
+      navigate("/");
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         const axiosError = e as AxiosError;
@@ -61,6 +70,7 @@ const LoginPage = (props: Props) => {
               placeholder="your@email.com"
               name="email"
               onChange={(e) => handleFormChange(e)}
+              value={loginInput.email}
             />
             <input
               type="password"
@@ -68,6 +78,7 @@ const LoginPage = (props: Props) => {
               id=""
               placeholder="password"
               onChange={(e) => handleFormChange(e)}
+              value={loginInput.password}
             />
             {error && <div className=" mb-3 text-red-600">{error}</div>}
             <button className="primary">Login</button>

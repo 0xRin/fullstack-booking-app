@@ -6,6 +6,7 @@ import { encryptPassword } from '../util/encryptPassword'
 import { User } from '../model/UserModel'
 import CustomError, { HttpCode } from '../errors/CustomError';
 import { checkUserPassword } from '../util/checkUserPassword';
+import { createCookie } from '../util/createCookie';
 
 export const registerUser = async (req: Request, res: Response) => {
 
@@ -45,5 +46,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
     if (!isMatch) throw new CustomError({ message: 'Invalid password', httpCode: HttpCode.UNAUTHORIZED })
 
-    res.status(200).json('logged in')
+    // create access token
+    const accessToken = createCookie(user.email!, user._id)
+
+    res.status(200).cookie('accessToken', accessToken, { sameSite: 'none', secure: true }).json('logged in')
 }
