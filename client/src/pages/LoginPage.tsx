@@ -1,5 +1,5 @@
 // library imports
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 //local imports
 import HeaderFooterLayout from "../layouts/HeaderFooterLayout";
@@ -12,7 +12,7 @@ type Props = {};
 
 const LoginPage = (props: Props) => {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { setUser, user } = useContext(UserContext);
 
   const [loginInput, setLoginInput] = useState({
     email: "",
@@ -55,6 +55,9 @@ const LoginPage = (props: Props) => {
       }
     }
   };
+
+  //check if user is created
+  if (user) return <Navigate to={"/"} />;
 
   return (
     <HeaderFooterLayout>

@@ -74,3 +74,8 @@ export const getUser = (req: Request, res: Response) => {
         }
     })
 }
+
+export const logoutUser = (req: Request, res: Response) => {
+    res.clearCookie("accessToken", { httpOnly: true, sameSite: "none", secure: true })
+    res.json("User logged out")
+}
