@@ -1,15 +1,18 @@
 // library imports
 import { Link, useNavigate } from "react-router-dom";
 
-//component imports
+//local imports
 import HeaderFooterLayout from "../layouts/HeaderFooterLayout";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios, { AxiosError } from "axios";
+import { UserContext } from "../context/UserContext";
+import axiosInstance from "../utils/axiosInstance";
 
 type Props = {};
 
 const LoginPage = (props: Props) => {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const [loginInput, setLoginInput] = useState({
     email: "",
@@ -32,13 +35,11 @@ const LoginPage = (props: Props) => {
     };
 
     try {
-      await axios.post(
-        "http://127.0.0.1:3000/auth/login",
-        {
-          ...loginInput,
-        },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post("/auth/login", {
+        ...loginInput,
+      });
+      const { _doc: data } = await res.data;
+      setUser(data);
       setLoginInput({
         email: "",
         password: "",

@@ -3,6 +3,7 @@ import express, { Response, NextFunction, Request } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import 'express-async-errors'
+import cookieParser from 'cookie-parser'
 
 // local imports
 import authRouter from './routes/authRouter'
@@ -28,6 +29,7 @@ app.use(cors(
     }
 ))
 app.use(express.json())
+app.use(cookieParser())
 
 // routes
 app.use('/auth', authRouter)

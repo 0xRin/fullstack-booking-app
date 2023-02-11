@@ -1,5 +1,7 @@
 //library imports
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose'
 
 //local imports
 import { encryptPassword } from '../util/encryptPassword'
@@ -49,5 +51,26 @@ export const loginUser = async (req: Request, res: Response) => {
     // create access token
     const accessToken = createCookie(user.email!, user._id)
 
-    res.status(200).cookie('accessToken', accessToken, { sameSite: 'none', secure: true }).json('logged in')
+    //return user info
+    const { password: userPassword, ...rest } = user
+
+    res.status(200).cookie('accessToken', accessToken, { sameSite: 'none', secure: true }).json(rest)
+}
+
+export const getUser = (req: Request, res: Response) => {
+    //grab token from request
+    const { accessToken } = req.cookies;
+
+    // user is not logged in
+    if (!accessToken) throw new CustomError({ message: 'Access Token not found; please log in', httpCode: HttpCode.UNAUTHORIZED })
+
+    // authenticate the cookie
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string, {}, async (err, user: any) => {
+        if (err) throw new CustomError({ message: ' Access Token expired', httpCode: HttpCode.FORBIDDEN })
+        else {
+            // find user and send information back
+            const userInfo = await User.findById(user.id)
+            res.status(200).json(userInfo)
+        }
+    })
 }
