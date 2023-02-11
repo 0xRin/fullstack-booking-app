@@ -6,7 +6,7 @@ type Props = {
   children: ReactElement;
 };
 
-type User = {
+export type User = {
   name: string;
   email: string;
   password: string;

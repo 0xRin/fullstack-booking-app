@@ -6,6 +6,7 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import HeaderFooterLayout from "../layouts/HeaderFooterLayout";
 import { UserContext } from "../context/UserContext";
 import axiosInstance from "../utils/axiosInstance";
+import ProfileSection from "../components/ProfileSection";
 
 type Props = {};
 
@@ -58,12 +59,7 @@ const AccountPage = (props: Props) => {
           </Link>
         </nav>
         {accountSection === "account" && (
-          <div className="text-center max-w-lg mx-auto">
-            Logged in as {user?.name}({user?.email})<br />
-            <button onClick={logoutUser} className="primary max-w-sm mt-2">
-              Logout
-            </button>
-          </div>
+          <ProfileSection logoutUser={logoutUser} user={user} />
         )}
       </>
     </HeaderFooterLayout>
