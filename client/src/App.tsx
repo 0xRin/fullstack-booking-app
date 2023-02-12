@@ -13,7 +13,9 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="account">
           <Route index element={<AccountPage />} />
-          <Route path=":accountSection" element={<AccountPage />} />
+          <Route path=":accountSection" element={<AccountPage />}>
+            <Route path=":action" element={<AccountPage />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
