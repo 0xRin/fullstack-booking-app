@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { perkList } from "../utils/perkList";
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 type Props = {};
 
 const NewPlaceForm = (props: Props) => {
+  const navigate = useNavigate();
+
   //state for holding form inputs
-  const [placeForm, setPlaceForm] = useState({
+  const defaultPlaceForm = {
     title: "",
     address: "",
     addedPhotos: [] as Array<string>,
@@ -19,7 +21,9 @@ const NewPlaceForm = (props: Props) => {
     checkIn: "",
     checkOut: "",
     maxGuests: 1,
-  });
+  };
+
+  const [placeForm, setPlaceForm] = useState(defaultPlaceForm);
 
   const handleFormChange = (
     e:
@@ -92,9 +96,24 @@ const NewPlaceForm = (props: Props) => {
     }
   };
 
+  const addNewAccomodation = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await axiosInstance.post("/places", {
+        ...placeForm,
+      });
+      const data = await res.data;
+      console.log(data);
+      setPlaceForm(defaultPlaceForm);
+      navigate("/account/places");
+    } catch (e) {
+      // TODO: show readable error to user
+    }
+  };
+
   return (
     <div>
-      <form action="">
+      <form onSubmit={(e) => addNewAccomodation(e)}>
         <label htmlFor="title" className="text-2xl mt-4">
           Title
         </label>
@@ -108,6 +127,7 @@ const NewPlaceForm = (props: Props) => {
           name="title"
           value={placeForm.title}
           onChange={(e) => handleFormChange(e)}
+          required
         />
         <label htmlFor="address" className="text-2xl mt-4">
           Address
@@ -120,6 +140,7 @@ const NewPlaceForm = (props: Props) => {
           name="address"
           value={placeForm.address}
           onChange={(e) => handleFormChange(e)}
+          required
         />
         <label htmlFor="photos" className="text-2xl mt-4">
           Photos
@@ -187,6 +208,7 @@ const NewPlaceForm = (props: Props) => {
           name="description"
           value={placeForm.description}
           onChange={(e) => handleFormChange(e)}
+          required
         />
         <label htmlFor="perks" className="text-2xl mt-4">
           Perks
@@ -240,6 +262,7 @@ const NewPlaceForm = (props: Props) => {
               name="checkIn"
               value={placeForm.checkIn}
               onChange={(e) => handleFormChange(e)}
+              required
             />
           </div>
           <div>
@@ -253,6 +276,7 @@ const NewPlaceForm = (props: Props) => {
               name="checkOut"
               value={placeForm.checkOut}
               onChange={(e) => handleFormChange(e)}
+              required
             />
           </div>
           <div>
@@ -265,11 +289,14 @@ const NewPlaceForm = (props: Props) => {
               name="maxGuests"
               value={placeForm.maxGuests}
               onChange={(e) => handleFormChange(e)}
+              required
             />
           </div>
         </div>
         <div>
-          <button className="primary my-4">Save</button>
+          <button type="submit" className="primary my-4">
+            Save
+          </button>
         </div>
       </form>
     </div>
