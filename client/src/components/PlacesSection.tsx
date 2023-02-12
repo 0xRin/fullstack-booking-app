@@ -10,7 +10,8 @@ const PlacesSection = (props: Props) => {
   const { action } = useParams();
   return (
     <div>
-      {action !== "new" && <MyAccomodations />}
+      {action === "edit" && <NewPlaceForm edit={true} />}
+      {!action && <MyAccomodations />}
       {action === "new" && <NewPlaceForm />}
     </div>
   );

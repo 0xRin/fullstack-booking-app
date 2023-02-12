@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { perkList } from "../utils/perkList";
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Accomodation } from "../pages/Place";
 
-type Props = {};
+type Props = {
+  edit?: boolean;
+};
 
-const NewPlaceForm = (props: Props) => {
+const NewPlaceForm = ({ edit }: Props) => {
   const navigate = useNavigate();
 
   //state for holding form inputs
@@ -24,6 +27,27 @@ const NewPlaceForm = (props: Props) => {
   };
 
   const [placeForm, setPlaceForm] = useState(defaultPlaceForm);
+
+  const getAccomodation = async () => {
+    // get query from url
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const accomodationId = urlParams.get("id");
+
+    try {
+      const res = await axiosInstance.get(`/places/${accomodationId}`);
+      const data = await res.data;
+      const { photos, ...rest } = data;
+      setPlaceForm({ addedPhotos: photos, ...rest });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    if (!edit) return;
+    getAccomodation();
+  }, []);
 
   const handleFormChange = (
     e:
@@ -111,9 +135,30 @@ const NewPlaceForm = (props: Props) => {
     }
   };
 
+  const editAccomodation = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await axiosInstance.put("/places", { ...placeForm });
+      const data = await res.data;
+      console.log(data);
+      setPlaceForm(defaultPlaceForm);
+      navigate("/account/places");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div>
-      <form onSubmit={(e) => addNewAccomodation(e)}>
+      <h1 className="mb-4 text-xl font-bold text-center">
+        {edit ? "Edit Accomodation" : "Add New Accomodation"}
+      </h1>
+
+      <form
+        onSubmit={
+          edit ? (e) => editAccomodation(e) : (e) => addNewAccomodation(e)
+        }
+      >
         <label htmlFor="title" className="text-2xl mt-4">
           Title
         </label>

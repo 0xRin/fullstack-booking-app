@@ -10,6 +10,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  _id: string;
 };
 
 interface UserContextType {
@@ -38,7 +39,10 @@ export const UserContextProvider = ({ children }: Props) => {
           setUser(data);
           setIsReady(true);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          setIsReady(true);
+        });
     }
   }, []);
   return (

@@ -1,6 +1,12 @@
 // library imports
 import { useContext } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
 //local imports
 import HeaderFooterLayout from "../layouts/HeaderFooterLayout";
@@ -14,10 +20,11 @@ type Props = {};
 const AccountPage = (props: Props) => {
   const { user, ready, setUser } = useContext(UserContext);
   let { accountSection } = useParams();
+
   const navigate = useNavigate();
 
-  //check if user ised in
-  if (!user) return <Navigate to={"/login"} />;
+  //check if user is logged in
+  if (!user && ready) return <Navigate to={"/login"} />;
 
   //set link style based on route
   if (accountSection == undefined) accountSection = "account";
@@ -102,7 +109,7 @@ const AccountPage = (props: Props) => {
           </Link>
         </nav>
         {accountSection === "account" && (
-          <ProfileSection logoutUser={logoutUser} user={user} />
+          <ProfileSection logoutUser={logoutUser} user={user!} />
         )}
         {accountSection === "places" && <PlacesSection />}
       </>
