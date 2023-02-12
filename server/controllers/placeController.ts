@@ -16,3 +16,13 @@ export const createPlace = async (req: AuthRequest, res: Response) => {
 
     res.status(200).json(`${newPlace.title} created!`);
 }
+
+export const getUserPlaces = async (req: AuthRequest, res: Response) => {
+    // grab authenticated user info
+    const user = req.userInfo
+
+    // get all places that were made by given owner
+    const myPlaces = await Place.find({ owner: user.id })
+
+    res.status(200).json(myPlaces);
+}

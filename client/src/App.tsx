@@ -11,6 +11,9 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="places">
+          <Route path="id" element={""} />
+        </Route>
         <Route path="account">
           <Route index element={<AccountPage />} />
           <Route path=":accountSection" element={<AccountPage />}>
