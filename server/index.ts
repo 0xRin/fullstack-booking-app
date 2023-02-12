@@ -10,6 +10,7 @@ import authRouter from './routes/authRouter'
 import { startServer } from './util/startServer'
 import { errorHandlerMiddleware } from './middleware/errorHandlerMiddleware'
 import { CustomErrorArgs } from './errors/CustomError'
+import photosRouter from './routes/photosRouter'
 
 //initialize express app
 const app = express();
@@ -30,9 +31,11 @@ app.use(cors(
 ))
 app.use(express.json())
 app.use(cookieParser())
+app.use('/uploads', express.static(__dirname + '/uploads'))
 
 // routes
 app.use('/auth', authRouter)
+app.use('/photos', photosRouter)
 
 //error handler middleware
 app.use((error: CustomErrorArgs, req: Request, res: Response, next: NextFunction) => {
