@@ -43,8 +43,11 @@ export const getSinglePlace = async (req: Request, res: Response) => {
 export const editPlace = async (req: Request, res: Response) => {
     const data = req.body;
 
+    // rename to match model property name
+    const { addedPhotos: photos } = data;
+
     // edit place
-    const editedPlace = await Place.findByIdAndUpdate(data._id, { ...data })
+    const editedPlace = await Place.findByIdAndUpdate(data._id, { photos, ...data })
 
     res.status(200).json("edited place!")
 }
