@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AddNew from "./AddNew";
 import axiosInstance from "../utils/axiosInstance";
-import { json } from "react-router-dom";
 import AccomodationList from "./AccomodationList";
 
 type Props = {};
@@ -13,7 +12,7 @@ const MyAccomodations = (props: Props) => {
   const getMyAccomodations = async () => {
     setIsLoading(true);
     try {
-      const res = await axiosInstance.get("/places");
+      const res = await axiosInstance.get("/places/user-places");
       const data = await res.data;
       setMyAccomodations(data);
       setIsLoading(false);
