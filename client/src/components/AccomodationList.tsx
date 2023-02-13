@@ -16,7 +16,7 @@ const AccomodationList = ({ myAccomodations }: Props) => {
         >
           <div className="w-32 h-32 bg-gray-300 rounded-2xl overflow-hidden grow shrink-0">
             <img
-              className="object-cover h-full"
+              className="object-cover w-full h-full"
               src={`http://localhost:3000/uploads/${accomodation.photos[0]}`}
               alt=""
             />
