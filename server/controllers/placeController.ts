@@ -51,3 +51,8 @@ export const editPlace = async (req: Request, res: Response) => {
 
     res.status(200).json("edited place!")
 }
+
+export const getAllPlaces = async (req: Request, res: Response) => {
+    const allPlaces = await Place.find();
+    res.status(200).json(allPlaces)
+}
