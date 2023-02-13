@@ -24,6 +24,7 @@ const NewPlaceForm = ({ edit }: Props) => {
     checkIn: "",
     checkOut: "",
     maxGuests: 1,
+    price: 100,
   };
 
   const [placeForm, setPlaceForm] = useState(defaultPlaceForm);
@@ -314,6 +315,20 @@ const NewPlaceForm = ({ edit }: Props) => {
           id="description"
           name="description"
           value={placeForm.description}
+          onChange={(e) => handleFormChange(e)}
+          required
+        />
+        <label htmlFor="price" className="text-2xl mt-4">
+          Price
+        </label>
+        <p className="text-gray-500 text-sm">
+          How much will it cost per night?
+        </p>
+        <input
+          type="number"
+          name="price"
+          id="price"
+          value={placeForm.price}
           onChange={(e) => handleFormChange(e)}
           required
         />
