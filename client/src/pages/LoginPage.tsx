@@ -44,7 +44,7 @@ const LoginPage = (props: Props) => {
         email: "",
         password: "",
       });
-      navigate("/");
+      navigate("/account/places");
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         const axiosError = e as AxiosError;

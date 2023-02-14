@@ -23,7 +23,7 @@ export const getUserPlaces = async (req: AuthRequest, res: Response) => {
     const user = req.userInfo
 
     // get all places that were made by given owner
-    const myPlaces = await Place.find({ owner: user.id })
+    const myPlaces = await Place.find({ owner: user.id }).sort({ _id: -1 })
 
     res.status(200).json(myPlaces);
 }
@@ -53,6 +53,6 @@ export const editPlace = async (req: Request, res: Response) => {
 }
 
 export const getAllPlaces = async (req: Request, res: Response) => {
-    const allPlaces = await Place.find();
+    const allPlaces = await Place.find().sort({ _id: -1 });
     res.status(200).json(allPlaces)
 }
