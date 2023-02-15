@@ -4,13 +4,16 @@ import App from "./App";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { UserContextProvider } from "./context/UserContext";
+import { ToasterContextProvider } from "./context/ToasterContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <UserContextProvider>
-    <BrowserRouter>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </BrowserRouter>
+    <ToasterContextProvider>
+      <BrowserRouter>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </BrowserRouter>
+    </ToasterContextProvider>
   </UserContextProvider>
 );

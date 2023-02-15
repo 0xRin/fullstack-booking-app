@@ -12,6 +12,7 @@ import { errorHandlerMiddleware } from './middleware/errorHandlerMiddleware'
 import { CustomErrorArgs } from './errors/CustomError'
 import photosRouter from './routes/photosRouter'
 import placesRouter from './routes/placesRouter'
+import bookingRouter from './routes/bookinRouter'
 
 //initialize express app
 const app = express();
@@ -38,6 +39,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use('/auth', authRouter)
 app.use('/photos', photosRouter)
 app.use('/places', placesRouter)
+app.use('/bookings', bookingRouter)
 
 //error handler middleware
 app.use((error: CustomErrorArgs, req: Request, res: Response, next: NextFunction) => {
