@@ -7,7 +7,7 @@ type Props = {
 
 const HeaderFooterLayout = ({ children }: Props) => {
   return (
-    <div className="p-4 px-8 flex flex-col min-h-screen">
+    <div className="p-4 px-8 flex flex-col">
       <Header />
       {children}
     </div>

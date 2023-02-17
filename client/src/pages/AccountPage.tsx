@@ -14,6 +14,7 @@ import { UserContext } from "../context/UserContext";
 import axiosInstance from "../utils/axiosInstance";
 import ProfileSection from "../components/ProfileSection";
 import PlacesSection from "../components/PlacesSection";
+import BookingSection from "../components/BookingSection";
 
 type Props = {};
 
@@ -113,6 +114,7 @@ const AccountPage = (props: Props) => {
           <ProfileSection logoutUser={logoutUser} user={user!} />
         )}
         {accountSection === "places" && <PlacesSection />}
+        {accountSection === "bookings" && <BookingSection />}
       </>
     </HeaderFooterLayout>
   );

@@ -37,12 +37,12 @@ const Place = (props: Props) => {
     checkIn: string;
     checkOut: string;
     numGuests: number;
-    phone: number | undefined;
+    phone: number | null;
     name: string;
   };
 
-  const [bookingInfo, setBookingInfo] = useState<BookingInfo>({
-    // FIXME: checkIn returns date that is one day ahead
+  // FIXME: checkIn returns date that is one day ahead
+  const defaultBooking = {
     checkIn: new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
@@ -59,8 +59,10 @@ const Place = (props: Props) => {
       .substring(0, 10),
     numGuests: 1,
     name: "",
-    phone: undefined,
-  });
+    phone: null,
+  };
+
+  const [bookingInfo, setBookingInfo] = useState<BookingInfo>(defaultBooking);
 
   const handleBookingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBookingInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -124,6 +126,8 @@ const Place = (props: Props) => {
       });
       const data = await res.data;
       toast("Booked! Time to pack your bags! 🛫");
+      setBookingInfo(defaultBooking);
+      navigate("/account/bookings");
     } catch (e: any) {
       setError("Please login or register before booking");
       clearError();
@@ -301,7 +305,7 @@ const Place = (props: Props) => {
                           type="tel"
                           required
                           name="phone"
-                          value={bookingInfo.phone}
+                          value={bookingInfo.phone as number}
                           onChange={(e) => handleBookingChange(e)}
                         />
                       </div>
@@ -316,7 +320,7 @@ const Place = (props: Props) => {
                         </div>
                       </div>
                     )}
-                    <button className="primary mt-4">
+                    <button className="primary mt-4" type="submit">
                       Book this place for $
                       <span>
                         {place &&
